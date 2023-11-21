@@ -1,24 +1,110 @@
+/* Vue d'ensemble */
 body {
-  font-family: sans-serif;
-  margin: auto;
-  max-width: 1280px;
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 1fr 6fr 1fr;
+  align-content: space-around;
+  gap: 1rem;
+
+  background-color: rgb(254, 254, 254);
+  border: 3px solid rgb(190, 186, 186);
+  border-radius: 5px;
+  padding: 1%;
+
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+/* Le header et le footer */
+
+header,
+footer {
+  background-color: rgb(82, 65, 76);
+  position: sticky; /* fixe mais ne cache pas le reste */
+  font-size: 1rem;
+  grid-column-start: 1;
+  grid-column-end: -1;
 }
 
-.navbar {
-  background-color: #313236;
-  border-radius: 2px;
-  max-width: 800px;
+header {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-.navbar a {
-  color: #aaa;
-  display: inline-block;
-  font-size: 15px;
-  padding: 10px;
-  text-decoration: none;
+footer {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+header p,
+footer p {
+  color: white;
+  text-align: center;
 }
 
-.navbar a:hover {
-  color: #ffffff;
+/* La mise en forme commune  */
+
+article,
+main,
+aside {
+  border: 2px solid rgb(81, 57, 146);
+  border-radius: 5px;
 }
 
+/* Le aside à gauche contenant les photos  */
+
+aside {
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5% 5%;
+  justify-content: space-around;
+  padding: 1rem;
+}
+aside h1 {
+  grid-column-end: -1;
+  grid-column-start: 1;
+}
+
+/* Le main contenant le poster pêle-mêle */
+#poster {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5% 5%;
+  border: 2px solid rgb(81, 57, 146);
+  border-radius: 5px;
+  justify-content: space-around;
+}
+
+.depot {
+  /* les cadres pour déposer les photos */
+  width: 100px;
+  height: 100px;
+  border: 1px dashed red;
+  margin: 1rem;
+}
+
+[alt^="zone"] {
+  text-align: center;
+}
+
+/* Repérer les div ou les images sélectionnées */
+.selected {
+  border: 2px solid red;
+}
+
+/* Les textes  */
+h1 {
+  text-align: center;
+}
+
+article p {
+  text-align: justify;
+  margin: 1rem;
+}
+
+/* Autoriser le redimensionnement des images
+Ne fonctionne pas pour l'instant car il faut mettre l'image dans une div. 
+Je dois voir avec Isabelle s'il n'y a pas une meilleure solution.  */
+resizable {
+  resize: both;
+  overflow: hidden; /* l'image ne peut pas déborder */
+}
