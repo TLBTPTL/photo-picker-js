@@ -5,6 +5,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const posterElement = document.getElementById('poster');
     const dropAreasContainer = document.createElement('div');
     dropAreasContainer.id = 'dropAreasContainer';
+    const cle = "dbsHRocrAoheHfq6Eu4IYl1eVs1XMx3lyYwqN4aXLT4"
+    const nombreImages = 6;
+    let selectedDropArea = null;
+    
+
+    
+    async function getUnsplashImages() {
+        try {
+            const response = await fetch(`https://api.unsplash.com/photos/random/?client_id=${cle}&count=${nombreImages}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des images depuis Unsplash:', error);
+            return null;
+        }
+    }
 
     // Ajout de 4 zones de dépôt
     for (let i = 1; i <= 4; i++) {
@@ -13,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropArea.dataset.zone = i; // Utilisation d'un attribut de données pour identifier chaque zone
 
         dropArea.addEventListener('click', function () {
+            selectedDropArea = dropArea;
             // Retirer la classe 'selected' de toutes les zones de dépôt
             document.querySelectorAll('.depot').forEach(function (area) {
                 area.classList.remove('selected');
@@ -53,28 +70,56 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Ajout d'événements de clic pour les images dans la partie gauche
-    nomImages.forEach(function (imageName) {
-        const imgElement = document.createElement('img');
-        imgElement.src = dossierImages + imageName;
-        imgElement.style.width = '100px'; // Définir la largeur en pixels
-        imgElement.style.height = '100px'; // Définir la hauteur en pixels
+    async function afficherImages() {
+        const imagesInternet = await getUnsplashImages();
+        if (imagesInternet) {
+            imagesInternet.forEach((image) => {
+                const imgElement1 = document.createElement('img');
+                imgElement1.src = image.urls.regular;
+                imgElement1.alt = image.alt_description;
+                imgElement1.style.width = '100px'; // Définir la largeur en pixels
+                imgElement1.style.height = '100px'; // Définir la hauteur en pixels
 
-        imgElement.addEventListener('click', function (event) {
-            // Retirer la classe 'selected' de toutes les zones de dépôt
-            document.querySelectorAll('.depot').forEach(function (area) {
-                area.classList.remove('selected');
+                imgElement1.addEventListener('click', function () {
+                    // Retirer la classe 'selected' de toutes les zones de dépôt
+                    document.querySelectorAll('.depot').forEach(function (area) {
+                        area.classList.remove('selected');
+                    });
+
+                    // Retirer la classe 'selected' de toutes les images de la partie gauche
+                    document.querySelectorAll('aside img').forEach(function (img) {
+                        img.classList.remove('selected');
+                    });
+
+                        // Ajouter la classe 'selected' à l'image cliquée
+                    imgElement1.classList.add('selected');
+                });
+
+                aside.appendChild(imgElement1);
             });
+        } else {
+            // En cas d'erreur, afficher les images de secours depuis le dossier img
+            nomImages.forEach(function(imageName) {
+                const imgElement2 = document.createElement('img');
+                imgElement2.src = dossierImages + imageName;
+                imgElement2.style.width = '100px';
+                imgElement2.style.height = '100px';
+                
+                imgElement2.addEventListener('click',function (event){
+                    if(selectedDropArea){
+                        selectedDropArea.innerHTML = `<img src="${imgElement2.src}" style="width: 100%; height: 100%;">`;
 
-            // Retirer la classe 'selected' de toutes les images de la partie gauche
-            document.querySelectorAll('aside img').forEach(function (img) {
-                img.classList.remove('selected');
+                        selectedDropArea.classList.remove('selected');
+                        selectedDropArea = null;
+
+                    }    
+                });
+                aside.appendChild(imgElement2);
             });
-
-            // Ajouter la classe 'selected' à l'image cliquée
-            imgElement.classList.add('selected');
-
-        });
-
-        aside.appendChild(imgElement);
-    });
+        }
+    }
+    afficherImages();
 });
+
+
+    
