@@ -1,77 +1,80 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Emplacement des images dans le dossier "img"
     const dossierImages = './img/';
-
-    // Liste des noms de fichiers des images à afficher
     const nomImages = ['img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg', 'img6.jpg'];
-
-    // Sélection de la balise aside
     const aside = document.querySelector('aside');
+    const posterElement = document.getElementById('poster');
+    const dropAreasContainer = document.createElement('div');
+    dropAreasContainer.id = 'dropAreasContainer';
 
-    // Compteur pour suivre le nombre d'images déposées
-    let droppedImagesCount = 0;
+    // Ajout de 4 zones de dépôt
+    for (let i = 1; i <= 4; i++) {
+        const dropArea = document.createElement('div');
+        dropArea.className = 'depot';
+        dropArea.dataset.zone = i; // Utilisation d'un attribut de données pour identifier chaque zone
 
-    // Affichage des 6 photos dans la partie gauche
+        dropArea.addEventListener('click', function () {
+            // Retirer la classe 'selected' de toutes les zones de dépôt
+            document.querySelectorAll('.depot').forEach(function (area) {
+                area.classList.remove('selected');
+            });
+
+            // Ajouter la classe 'selected' à la zone de dépôt cliquée
+            dropArea.classList.add('selected');
+
+            // Vérifier si une image est sélectionnée dans la partie gauche
+            const selectedImage = document.querySelector('aside img.selected');
+            if (selectedImage) {
+                // Si une image est sélectionnée, mettre à jour la zone avec l'image
+                dropArea.innerHTML = `<img src="${selectedImage.src}" style="width: 100%; height: 100%;">`;
+            }
+        });
+
+        dropAreasContainer.appendChild(dropArea);
+    }
+
+    posterElement.appendChild(dropAreasContainer);
+
+    // Ajout d'un gestionnaire d'événements de clic sur l'ensemble de la page
+    document.addEventListener('click', function (event) {
+        // Vérifier si l'élément cliqué est une zone de dépôt ou une image
+        const dropAreaOrImage = event.target.classList.contains('depot') || event.target.tagName === 'IMG';
+
+        if (!dropAreaOrImage) {
+            // Retirer la classe 'selected' de toutes les zones de dépôt
+            document.querySelectorAll('.depot').forEach(function (area) {
+                area.classList.remove('selected');
+            });
+
+            // Retirer la classe 'selected' de toutes les images de la partie gauche
+            document.querySelectorAll('aside img').forEach(function (img) {
+                img.classList.remove('selected');
+            });
+        }
+    });
+
+    // Ajout d'événements de clic pour les images dans la partie gauche
     nomImages.forEach(function (imageName) {
         const imgElement = document.createElement('img');
         imgElement.src = dossierImages + imageName;
-        aside.appendChild(imgElement);
-    });
+        imgElement.style.width = '100px'; // Définir la largeur en pixels
+        imgElement.style.height = '100px'; // Définir la hauteur en pixels
 
-    // Sélection de la zone de dépôt des images sources
-    const posterElement = document.getElementById('poster');
+        imgElement.addEventListener('click', function (event) {
+            // Retirer la classe 'selected' de toutes les zones de dépôt
+            document.querySelectorAll('.depot').forEach(function (area) {
+                area.classList.remove('selected');
+            });
 
-    // Ajout d'un gestionnaire d'événements pour permettre aux utilisateurs de déposer des images
-    posterElement.addEventListener('dragover', function (event) {
-        event.preventDefault();
-    });
+            // Retirer la classe 'selected' de toutes les images de la partie gauche
+            document.querySelectorAll('aside img').forEach(function (img) {
+                img.classList.remove('selected');
+            });
 
-    // Fonction pour gérer le dépôt d'une image dans une zone
-    function gererDrop(event) {
-        event.preventDefault();
+            // Ajouter la classe 'selected' à l'image cliquée
+            imgElement.classList.add('selected');
 
-        // Autoriser le dépôt uniquement si le nombre d'images déposées est inférieur à 4
-        if (droppedImagesCount < 4) {
-            const files = event.dataTransfer.files;
-
-            for (const file of files) {
-                if (file.type.match('image.*')) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (readerEvent) {
-                        const imgElement = document.createElement('img');
-                        imgElement.src = readerEvent.target.result;
-                        posterElement.appendChild(imgElement);
-
-                        // Incrémenter le compteur d'images déposées
-                        droppedImagesCount++;
-
-                        // Désactiver le dépôt après 4 images
-                        if (droppedImagesCount === 4) {
-                            posterElement.removeEventListener('drop', gererDrop);
-                        }
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            }
-        }
-    }
-});
-// Ajout d'événements de dépôt pour chaque zone
-const dropAreas = document.querySelectorAll('.depot');
-dropAreas.forEach(function (dropArea) {
-    dropArea.addEventListener('dragover', function (event) {
-        event.preventDefault();
-    });
-
-    dropArea.addEventListener('drop', handleDrop);
-
-    // Ajout d'un gestionnaire d'événements pour mettre en surbrillance la zone sélectionnée
-    dropArea.addEventListener('click', function () {
-        dropAreas.forEach(function (area) {
-            area.classList.remove('selected');
         });
-        dropArea.classList.add('selected');
+
+        aside.appendChild(imgElement);
     });
 });
