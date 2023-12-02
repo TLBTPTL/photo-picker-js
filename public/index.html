@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Projet Javascript</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
-  <body>
-    <header><p>Projet Javascript - OUZEHIMI & ANDRE</p></header>
+</head>
+<body>
+    <header>
+        <p>Projet Javascript - OUZEHIMI & ANDRE</p>
+    </header>
     <aside>
-      <h1>Vos photos</h1>
-      <!-- on mettra 4 images  -->
+        <h1>Vos photos</h1>
+        <!-- on mettra 4 images  -->
     </aside>
     <main id="poster">
-      <!-- zone de dépôt des images sources -->
+        <!-- zone de dépôt des images sources -->
     </main>
 
     <article>
-      <h1>Aide</h1>
-      <p>
-        Cliquez sur une zone puis sur une photo pour l'ajouter au pêle-mêle, ou faites glissez et déposez une photo dans une zone !
-      </p>
-      <h1>Changer la couleur de fond</h1>
-      <p>Sélectionnez une couleur de fond pour la partie centrale !</p>
-      <input type="color" id="background-color-picker" value="#ffffff"> <!-- Ajout du sélecteur de couleur -->
+        <h1>Aide</h1>
+        <p>
+            Cliquez sur une zone puis sur une photo pour l'ajouter au pêle-mêle, ou faites glissez et déposez une photo dans une zone !
+        </p>
+        <h1>Changer la couleur de fond</h1>
+        <p>Sélectionnez une couleur de fond pour la partie centrale !</p>
+        <input type="color" id="background-color-picker" class="centered-input" value="#ffffff"> <!-- Ajout du sélecteur de couleur -->
 
-      <h1>Sélectionnez la taille des zones de dépôt !</h1>
-      <input type="number" class="spinner" id="resize-spinner" min="50" max="300" value="100"> <!-- Ajout du spinner de selection de taille -->
-
+        <h1>Sélectionnez la taille des zones de dépôt !</h1>
+        <input type="number" class="spinner centered-input" id="resize-spinner" min="50" max="300" value="100"> <!-- Ajout du spinner de sélection de taille -->
+        
+        <br />
+        
+        <h1>Choisir un thème</h1>
+        <input type="text" id="theme-input" class="centered-input" placeholder="Saisir un thème"> <!-- Ajout du choix du thème -->
     </article>
 
-    
-    <footer><p>Contacts et autres infos</p></footer>
+    <footer>
+        <p>Contacts et autres infos</p>
+    </footer>
     <script src="scriptProjet.js"></script>
-  </body>
+</body>
 </html>
+

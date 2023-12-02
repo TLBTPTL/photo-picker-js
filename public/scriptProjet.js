@@ -5,12 +5,73 @@ document.addEventListener('DOMContentLoaded', function () {
     const posterElement = document.getElementById('poster');
     const dropAreasContainer = document.createElement('div');
     dropAreasContainer.id = 'dropAreasContainer';
+    // Clé d'accés
     const cle = "dbsHRocrAoheHfq6Eu4IYl1eVs1XMx3lyYwqN4aXLT4"
+    // Nombre d'images qu'on veut récupérer à la fois
     const nombreImages = 6;
     let selectedDropArea = null;
+    // Champ de texte pour saisir le thème
+    const themeInput = document.getElementById('theme-input');
     
 
-    //Fonction pour récupérer 6 images au hasard depuis Unsplashed
+    // Fonction pour récupérer des images en fonction du thème sélectionné
+    async function getUnsplashImagesByTheme(theme) {
+        try {
+            const response = await fetch(`https://api.unsplash.com/photos/random/?client_id=${cle}&count=${nombreImages}&query=${theme}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des images depuis Unsplash:', error);
+            return null;
+        }
+    }
+
+    // Fonction pour mettre à jour les images en fonction du thème sélectionné
+    async function mettreAJourImages() {
+        const themeSaisi = themeInput.value.trim();
+
+        // Vérifier si un thème est sélectionné
+        if (themeSaisi) {
+            const imagesInternet = await getUnsplashImagesByTheme(themeSaisi);
+
+            // Effacer les images existantes
+            aside.innerHTML = '';
+
+            // Afficher les nouvelles images
+            if (imagesInternet) {
+                imagesInternet.forEach((image) => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image.urls.regular;
+                    imgElement.alt = image.alt_description;
+                    imgElement.style.width = '100px';
+                    imgElement.style.height = '100px';
+
+                    imgElement.addEventListener('click', function () {
+                        if (selectedDropArea) {
+                            selectedDropArea.innerHTML = `<img src="${imgElement.src}" style="width: 100%; height: 100%;">`;
+                            selectedDropArea.classList.remove('selected');
+                            selectedDropArea = null;
+                        }
+                    });
+
+                    aside.appendChild(imgElement);
+                });
+            } else {
+                console.error('Erreur lors de la récupération des images par thème.');
+                // Afficher des images de secours aléatoires
+                afficherImages();
+            }
+        } else {
+            // Si aucun thème n'est saisi, afficher des images aléatoires
+            afficherImages();
+        }
+    }
+
+    // Ajouter un gestionnaire d'événements pour le changement de thème
+    themeInput.addEventListener('input', mettreAJourImages);
+
+
+    //Fonction pour récupérer 6 images aléatoires depuis Unsplashed
     async function getUnsplashImages() {
         try {
             const response = await fetch(`https://api.unsplash.com/photos/random/?client_id=${cle}&count=${nombreImages}`);
@@ -22,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Fonction pour gérer le dragstart sur les images de la partie gauche
+    // Fonction pour gérer le drag sur les images de la partie gauche
     function handleDragStart(event) {
         event.dataTransfer.setData('text/plain', event.target.src);
     }
@@ -30,14 +91,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ajout d'événements de clic pour les images dans la partie gauche
     async function afficherImages() {
         const imagesInternet = await getUnsplashImages();
-        // Si tout marche bien, afficher les images récupérées sur Unsplashed
+        // Si tout marche bien, afficher les images récupérées sur Unsplash
         if (imagesInternet) {
             imagesInternet.forEach((image) => {
                 const imgElement1 = document.createElement('img');
                 imgElement1.src = image.urls.regular;
                 imgElement1.alt = image.alt_description;
-                imgElement1.style.width = '100px'; // Définir la largeur en pixels
-                imgElement1.style.height = '100px'; // Définir la hauteur en pixels
+                imgElement1.style.width = '100px'; 
+                imgElement1.style.height = '100px'; 
 
                 // Ajouter l'événement de dragstart
                 imgElement1.addEventListener('dragstart', handleDragStart);
@@ -169,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const colorPicker = document.getElementById('background-color-picker');
-
+    // Gestionnaire d'événements pour le changement de la couleur de fond de la partie centrale
     colorPicker.addEventListener('input', function () {
         const selectedColor = colorPicker.value;
         posterElement.style.backgroundColor = selectedColor;
@@ -177,12 +238,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const inputNumber = document.getElementById('resize-spinner');
-
-    // Gestionnaire d'événements pour le changement de valeur de l'input number
+    // Gestionnaire d'événements pour le changement de taille des zones de dépôt
     inputNumber.addEventListener('change', function () {
       ajusterTailleDepot(this.value);
     });
 
+    // Fonction pour ajuster la taille des zones de dépôt
     function ajusterTailleDepot(nouvelleTaille) {
         // Convertir la valeur en nombre
         const tailleEnNombre = parseInt(nouvelleTaille);
@@ -205,8 +266,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const imgElement1 = document.createElement('img');
                 imgElement1.src = image.urls.regular;
                 imgElement1.alt = image.alt_description;
-                imgElement1.style.width = '100px'; // Définir la largeur en pixels
-                imgElement1.style.height = '100px'; // Définir la hauteur en pixels
+                imgElement1.style.width = '100px'; 
+                imgElement1.style.height = '100px'; 
 
                 imgElement1.addEventListener('click', function () {
                     if (selectedDropArea) {
@@ -240,10 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    
 
     afficherImages();
 });
-
-
-

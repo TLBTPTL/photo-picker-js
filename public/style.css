@@ -109,11 +109,9 @@ resizable {
   overflow: hidden; /* l'image ne peut pas déborder */
 }
 
-.spinner {
-  position: absolute;
-  margin-left: 85px;
-}
 
-#background-color-picker {
-  margin-left: 95px; /* Ajustez la marge selon vos besoins */
+/* Classe pour centrer des éléments */ 
+.centered-input {
+  margin: 0 auto;
+  display: block; 
 }
