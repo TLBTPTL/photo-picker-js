@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropAreasContainer = document.createElement('div');
     dropAreasContainer.id = 'dropAreasContainer';
     // Clé d'accés
-    const cle = "dbsHRocrAoheHfq6Eu4IYl1eVs1XMx3lyYwqN4aXLT4"
+    const cle = "dbsHRocrAoheHfq6Eu4IYl1eVs1XMx3lyYwqN4aXLT4";
     // Nombre d'images qu'on veut récupérer à la fois
     const nombreImages = 6;
     let selectedDropArea = null;
