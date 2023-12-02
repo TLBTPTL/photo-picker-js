@@ -70,6 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    const colorPicker = document.getElementById('background-color-picker');
+
+    colorPicker.addEventListener('input', function () {
+        const selectedColor = colorPicker.value;
+        posterElement.style.backgroundColor = selectedColor;
+    });
+
     // Ajout d'événements de clic pour les images dans la partie gauche
     async function afficherImages() {
         const imagesInternet = await getUnsplashImages();
@@ -112,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
     afficherImages();
 });
 
