@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const nombreImages = 6;
     let selectedDropArea = null;
     
+
     
     async function getUnsplashImages() {
         try {
@@ -121,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    
 
     afficherImages();
 });
