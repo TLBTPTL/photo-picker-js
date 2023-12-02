@@ -80,6 +80,28 @@ document.addEventListener('DOMContentLoaded', function () {
         posterElement.style.backgroundColor = selectedColor;
     });
 
+
+    const inputNumber = document.getElementById('resize-spinner');
+
+    // Gestionnaire d'événements pour le changement de valeur de l'input number
+    inputNumber.addEventListener('change', function () {
+      ajusterTailleDepot(this.value);
+    });
+
+    function ajusterTailleDepot(nouvelleTaille) {
+        // Convertir la valeur en nombre
+        const tailleEnNombre = parseInt(nouvelleTaille);
+      
+        // Vérifier si la valeur est un nombre valide
+        if (!isNaN(tailleEnNombre)) {
+          // Appliquer la nouvelle taille aux zones de dépôt
+          document.querySelectorAll('.depot').forEach(function (zone) {
+            zone.style.width = tailleEnNombre + 'px';
+            zone.style.height = tailleEnNombre + 'px';
+          });
+        }
+      }
+
     // Ajout d'événements de clic pour les images dans la partie gauche
     async function afficherImages() {
         const imagesInternet = await getUnsplashImages();
