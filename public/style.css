@@ -99,6 +99,10 @@ h1 {
 article p {
   text-align: justify;
   margin: 1rem;
+  
+}
+#background-color-picker {
+  margin-left: 95px; /* Ajustez la marge selon vos besoins */
 }
 
 /* Autoriser le redimensionnement des images
