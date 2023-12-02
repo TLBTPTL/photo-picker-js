@@ -124,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Ajouter l'événement de clic
         dropArea.addEventListener('click', function () {
+            // Mettre à jour la zone de dépôt sélectionnée
             selectedDropArea = dropArea;
+
             // Retirer la classe 'selected' de toutes les zones de dépôt
             document.querySelectorAll('.depot').forEach(function (area) {
                 area.classList.remove('selected');
@@ -132,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Ajouter la classe 'selected' à la zone de dépôt cliquée
             dropArea.classList.add('selected');
+
 
             // Vérifier si une image est sélectionnée dans la partie gauche
             const selectedImage = document.querySelector('aside img.selected');
@@ -165,7 +168,80 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Appeler la fonction pour afficher les images
+    const colorPicker = document.getElementById('background-color-picker');
+
+    colorPicker.addEventListener('input', function () {
+        const selectedColor = colorPicker.value;
+        posterElement.style.backgroundColor = selectedColor;
+    });
+
+
+    const inputNumber = document.getElementById('resize-spinner');
+
+    // Gestionnaire d'événements pour le changement de valeur de l'input number
+    inputNumber.addEventListener('change', function () {
+      ajusterTailleDepot(this.value);
+    });
+
+    function ajusterTailleDepot(nouvelleTaille) {
+        // Convertir la valeur en nombre
+        const tailleEnNombre = parseInt(nouvelleTaille);
+      
+        // Vérifier si la valeur est un nombre valide
+        if (!isNaN(tailleEnNombre)) {
+          // Appliquer la nouvelle taille aux zones de dépôt
+          document.querySelectorAll('.depot').forEach(function (zone) {
+            zone.style.width = tailleEnNombre + 'px';
+            zone.style.height = tailleEnNombre + 'px';
+          });
+        }
+      }
+
+    // Ajout d'événements de clic pour les images dans la partie gauche
+    async function afficherImages() {
+        const imagesInternet = await getUnsplashImages();
+        if (imagesInternet) {
+            imagesInternet.forEach((image) => {
+                const imgElement1 = document.createElement('img');
+                imgElement1.src = image.urls.regular;
+                imgElement1.alt = image.alt_description;
+                imgElement1.style.width = '100px'; // Définir la largeur en pixels
+                imgElement1.style.height = '100px'; // Définir la hauteur en pixels
+
+                imgElement1.addEventListener('click', function () {
+                    if (selectedDropArea) {
+                        selectedDropArea.innerHTML = `<img src="${imgElement1.src}" style="width: 100%; height: 100%;">`;
+                        selectedDropArea.classList.remove('selected');
+                        selectedDropArea = null;
+                    }
+                });
+
+                aside.appendChild(imgElement1);
+            });
+        } else {
+            // En cas d'erreur, afficher les images de secours depuis le dossier img
+            nomImages.forEach(function(imageName) {
+                const imgElement2 = document.createElement('img');
+                imgElement2.src = dossierImages + imageName;
+                imgElement2.style.width = '100px';
+                imgElement2.style.height = '100px';
+                
+                imgElement2.addEventListener('click',function (event){
+                    if(selectedDropArea){
+                        selectedDropArea.innerHTML = `<img src="${imgElement2.src}" style="width: 100%; height: 100%;">`;
+
+                        selectedDropArea.classList.remove('selected');
+                        selectedDropArea = null;
+
+                    }    
+                });
+                aside.appendChild(imgElement2);
+            });
+        }
+    }
+
+    
+
     afficherImages();
 });
 

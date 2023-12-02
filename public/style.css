@@ -108,3 +108,8 @@ resizable {
   resize: both;
   overflow: hidden; /* l'image ne peut pas déborder */
 }
+
+.spinner {
+  position: absolute;
+  margin-left: 10px;
+}
