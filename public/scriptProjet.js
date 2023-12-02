@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedImage) {
                 // Si une image est sélectionnée, mettre à jour la zone avec l'image
                 dropArea.innerHTML = `<img src="${selectedImage.src}" style="width: 100%; height: 100%;">`;
+                selectedImage.classList.remove('selected');
             }
         });
 
@@ -81,18 +82,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgElement1.style.height = '100px'; // Définir la hauteur en pixels
 
                 imgElement1.addEventListener('click', function () {
-                    // Retirer la classe 'selected' de toutes les zones de dépôt
-                    document.querySelectorAll('.depot').forEach(function (area) {
-                        area.classList.remove('selected');
-                    });
-
-                    // Retirer la classe 'selected' de toutes les images de la partie gauche
-                    document.querySelectorAll('aside img').forEach(function (img) {
-                        img.classList.remove('selected');
-                    });
-
-                        // Ajouter la classe 'selected' à l'image cliquée
-                    imgElement1.classList.add('selected');
+                    if (selectedDropArea) {
+                        selectedDropArea.innerHTML = `<img src="${imgElement1.src}" style="width: 100%; height: 100%;">`;
+                        selectedDropArea.classList.remove('selected');
+                        selectedDropArea = null;
+                    }
                 });
 
                 aside.appendChild(imgElement1);
