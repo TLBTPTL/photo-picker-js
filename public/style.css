@@ -111,5 +111,9 @@ resizable {
 
 .spinner {
   position: absolute;
-  margin-left: 10px;
+  margin-left: 85px;
+}
+
+#background-color-picker {
+  margin-left: 95px; /* Ajustez la marge selon vos besoins */
 }
