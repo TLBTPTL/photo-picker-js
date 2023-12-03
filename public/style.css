@@ -112,3 +112,10 @@ resizable {
   resize: both;
   overflow: hidden; /* l'image ne peut pas déborder */
 }
+
+
+/* Classe pour centrer des éléments */ 
+.centered-input {
+  margin: 0 auto;
+  display: block; 
+}
